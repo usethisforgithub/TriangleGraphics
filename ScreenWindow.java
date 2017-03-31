@@ -18,14 +18,13 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class ScreenWindow implements WindowListener, Runnable, KeyListener, MouseListener{
+public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
 
 	//public static final Dimension SIZE = new Dimension(1100,748);
-	private Frame frame;
+	//private Frame frame;
 	public static String TITLE = "New Window";
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
-	private int sizeX, sizeY;
 	private final int sizeRatio = 1100/748;
 	private Triangle triangle;
 	
@@ -34,17 +33,18 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 	
 	
 	public ScreenWindow(){
-		frame = new Frame();
-		frame.addWindowListener(this);
-		frame.addMouseListener(this);
-		frame.setSize(1100,748);
-		sizeX = frame.getWidth();
-		sizeY = frame.getHeight();
-		frame.setTitle(TITLE);
+		super();
+		this.addWindowListener(this);
+		//frame = new Frame();
+		this.addKeyListener(this);
+		this.addMouseListener(this);
+		
+		this.setSize(1100,748);
+		this.setTitle(TITLE);
 		isRunning = true;
 		isDone = false;
-		frame.setVisible(true);
-		imgBuffer = frame.createImage(1100, 748);
+		this.setVisible(true);
+		imgBuffer = this.createImage(1100, 748);
 		triangle = new Triangle(80);
 	}
 	
@@ -66,17 +66,17 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 	
 	
 	public void draw(){
-		imgBuffer = frame.createImage(frame.getWidth(), frame.getHeight());
+		imgBuffer = this.createImage(this.getWidth(), this.getHeight());
 		Graphics2D g2 = (Graphics2D)imgBuffer.getGraphics();
 		
 		g2.setColor(Color.BLUE);
-		g2.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 			g2.setColor(Color.black);
 			Font font = new Font("Callibri", Font.PLAIN, 75);
 		
 			g2.setFont(font);
-			g2.drawString("Waller's Triangle Game", (int)((frame.getWidth() - font.getStringBounds("Waller's Triangle Game", g2.getFontRenderContext()).getWidth())/2), 100);
+			g2.drawString("Waller's Triangle Game", (int)((this.getWidth() - font.getStringBounds("Waller's Triangle Game", g2.getFontRenderContext()).getWidth())/2), 100);
 			
 			for(int i = 0; i < triangle.boardSize(); i++){
 				triangle.getPeg(i).draw(g2);
@@ -87,8 +87,8 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 			//g2.fillOval(frame.getWidth()/2 - 35, frame.getHeight()/2, 70, 70);
 
 	
-		g2 = (Graphics2D)frame.getGraphics();
-		g2.drawImage(imgBuffer, 0, 0, frame.getWidth(), frame.getHeight(), 0, 0, frame.getWidth(), frame.getHeight(), null);
+		g2 = (Graphics2D)this.getGraphics();
+		g2.drawImage(imgBuffer, 0, 0, this.getWidth(), this.getHeight(), 0, 0, this.getWidth(), this.getHeight(), null);
 		g2.dispose();
 	}
 	
@@ -120,9 +120,9 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		frame.setVisible(false);
+		this.setVisible(false);
 		isRunning = false;
-		frame.dispose();
+		this.dispose();
 	}
 
 	@Override
@@ -175,11 +175,7 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		for(int i = 0; i < triangle.boardSize(); i++ ){
-			if(triangle.getPeg(i).contains(arg0.getX(), arg0.getY())){
-				triangle.getPeg(i).toggle();
-			}
-		}
+		
 	}
 
 	@Override
@@ -197,6 +193,11 @@ public class ScreenWindow implements WindowListener, Runnable, KeyListener, Mous
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		for(int i = 0; i < triangle.boardSize(); i++ ){
+			if(triangle.getPeg(i).contains(arg0.getX(), arg0.getY())){
+				triangle.getPeg(i).toggle();
+			}
+		}
 		
 	}
 
