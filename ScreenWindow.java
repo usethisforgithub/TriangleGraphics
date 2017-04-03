@@ -22,10 +22,9 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 	//public static final Dimension SIZE = new Dimension(1100,748);
 	//private Frame frame;
-	public static String TITLE = "New Window";
+	//public static String TITLE = "New Window";
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
-	private final int sizeRatio = 1100/748;
 	private Triangle triangle;
 	
 	
@@ -35,26 +34,25 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	public ScreenWindow(){
 		super();
 		this.addWindowListener(this);
-		//frame = new Frame();
 		this.addKeyListener(this);
 		this.addMouseListener(this);
-		
 		this.setSize(1100,748);
-		this.setTitle(TITLE);
+		this.setTitle("Triangle Game");
 		isRunning = true;
 		isDone = false;
 		this.setVisible(true);
 		imgBuffer = this.createImage(1100, 748);
-		triangle = new Triangle(80);
+		triangle = new Triangle(5,70);
+		this.setMinimumSize(new Dimension(500,500));
 	}
 	
 	public void run(){
 		while(isRunning){
 			
 			
+			
+			
 			draw();
-			
-			
 			try{
 				Thread.sleep(10);
 				}catch(InterruptedException ie){
@@ -73,20 +71,28 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 			g2.setColor(Color.black);
-			Font font = new Font("Callibri", Font.PLAIN, 75);
+			Font font = new Font("Callibri", Font.PLAIN, (int)((3.0/44.0)*(double)this.getWidth()));//font.getStringBounds("Waller's Triangle Game", g2.getFontRenderContext()).getWidth())/2)
 		
 			g2.setFont(font);
-			g2.drawString("Waller's Triangle Game", (int)((this.getWidth() - font.getStringBounds("Waller's Triangle Game", g2.getFontRenderContext()).getWidth())/2), 100);
+			g2.drawString("Waller's Triangle Game", (int)((this.getWidth() - font.getStringBounds("Waller's Triangle Game", g2.getFontRenderContext()).getWidth())/2), 125 + font.getSize()-75);
+			
+			
 			
 			for(int i = 0; i < triangle.boardSize(); i++){
+				
+				triangle.getPeg(i).setDiameter((int)(((int)((550.0/748.0)*(double)(this.getHeight())))/((3.0/2.0)* (double)triangle.getNumRows())));//(int)((35.0/374.0)*this.getHeight())
+				triangle.getPeg(i).setCoordX(500);
+	
+                                                                                  //draws separation				
+				triangle.getPeg(i).setCoordY(((triangle.getPeg(i).getDiameter()/4)+triangle.getPeg(i).getDiameter())*triangle.getPeg(i).getBoardY()+(triangle.getPeg(i).getDiameter()/2) + (this.getHeight()-((triangle.getNumRows()*triangle.getPeg(i).getDiameter())+(triangle.getNumRows()*(triangle.getPeg(i).getDiameter()/4)))));// + ((triangle.getNumRows()*triangle.getPeg(i).getDiameter())+(triangle.getNumRows()*(triangle.getPeg(i).getDiameter()/4)))
 				triangle.getPeg(i).draw(g2);
+				//System.out.println("boardX " + triangle.getPeg(i).getBoardX());
+				//System.out.println("boardY " + triangle.getPeg(i).getBoardY());
+				//System.out.println("coordX " + triangle.getPeg(i).getCoordX());
+				//System.out.println("coordY " + triangle.getPeg(i).getCoordY());
 			}
 			
-			
-		//	g2.setColor(Color.lightGray);
-			//g2.fillOval(frame.getWidth()/2 - 35, frame.getHeight()/2, 70, 70);
-
-	
+		
 		g2 = (Graphics2D)this.getGraphics();
 		g2.drawImage(imgBuffer, 0, 0, this.getWidth(), this.getHeight(), 0, 0, this.getWidth(), this.getHeight(), null);
 		g2.dispose();

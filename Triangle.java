@@ -2,11 +2,29 @@ import java.awt.Color;
 
 public class Triangle {
 	private Peg[] pegSet;
+	private int numRows;
 	
-	public Triangle(int i){
-		pegSet = new Peg[i];
-		for(int j = 0; j < i; j++){
-			pegSet[j] = new Peg(100*j, 100*j, 100*j, 500, 70);
+	public Triangle(int numRows, int pegSize){
+	
+		int result = 0;
+		for(int i = 0; i < numRows ;i++){
+			for(int j = 0; j <= i; j++){
+				result++;
+			}
+		}
+		
+		this.numRows = numRows;
+		
+		
+		pegSet = new Peg[result];
+		
+		result = 0;
+		for(int i = 0; i < numRows; i++){
+			for(int j = 0; j <= i; j++){
+				
+			pegSet[result] = new Peg(j, i, pegSize);
+			result++;
+			}
 		}
 	}
 	
@@ -18,9 +36,9 @@ public class Triangle {
 		return pegSet[i].isFull();
 	}
 	
-	//public void togglePeg(int i){
-	//	pegSet[i].toggle();
-	//}
+	public int getNumRows(){
+		return numRows;
+	}
 	
 	public Peg getPeg(int i){
 		return pegSet[i];

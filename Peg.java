@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -8,27 +9,18 @@ public class Peg{
 	
 	
 	
-	public Peg(int bX, int bY, int cX, int cY, int diam){
+	public Peg(int bX, int bY, int diam){
 		boardX = bX;
 		boardY = bY;
-		coordX = cX;
-		coordY = cY;
 		diameter = diam;
 		isFull = false;
 		isHovering = false;
+		coordX = -1000;
+		coordY = -1000;
 		
 	}
 	
-	public Peg(int bX, int bY, int cX, int cY, int diam, boolean fullState){
-		boardX = bX;
-		boardY = bY;
-		coordX = cX;
-		coordY = cY;
-		diameter = diam;
-		isFull = fullState;
-		isHovering = false;
-		
-	}
+	
 
 	
 	public void draw(Graphics2D g2) {
@@ -38,6 +30,8 @@ public class Peg{
 			g2.setColor(Color.white);
 		}
 		g2.fillOval(coordX - (diameter/2), coordY - (diameter/2), diameter, diameter);
+		
+		
 		
 	}
 	
@@ -73,6 +67,14 @@ public class Peg{
 		isFull = !isFull;
 	}
 	
+	public void setDiameter(int diam){
+		diameter = diam;
+	}
+	
+	public int getDiameter(){
+		return diameter;
+	}
+	
 	public boolean contains(int x, int y){
 		int centerX = coordX;
 		int centerY = coordY;
@@ -81,6 +83,8 @@ public class Peg{
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
 		return hypotenuse < diameter / 2;
 	}
+	
+	
 	
 	//public boolean isHovering(mousepositions???){}
 	
